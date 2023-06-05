@@ -1,0 +1,93 @@
+---
+title: "CODA para estudios del microbioma"
+subtitle: "Seminario para METACIRCLE"
+author: "Grupo BIOCOM"
+date: "8 Junio 2023"
+institute: "Dpto. Matemáticas e Informática - UIB"
+format: sketchy-html
+toc: true
+---
+
+## Introducción 👋🏻
+
+-   Los estudios sobre el microbioma humano se enmarcan en el ámbito de los datos de composición, porque <font color="blue"> las abundancias absolutas de microbios no pueden obtenerse a partir de los datos de secuenciación</font>.
+
+-   Cada muestra consiste en proporciones de varios organismos con una suma limitada a una constante. Esta simple característica puede hacer que <font color="blue"> los tratamientos estadísticos tradicionales, pueden producir resultados erróneos y correlaciones espurias</font>.
+
+### Objetivos del seminario 🎯
+
+*i.- Discutiremos los orígenes de la composicionalidad en los datos del microbioma y algunas características de este tipo de datos que influencian el análisis estadístico.*
+
+*ii.- Mostraremos los principales problemas de utilizar los métodos estadísticos tradicionales para tratar los datos de secuenciación.*
+
+*iii.- Con un ejemplo de datos de la microbiota humana, veremos un análisis de datos composicional en la práctica.*
+
+## 1. Los datos de secuenciación son composicionales  🤯
+
+![](images/frontiers.PNG)
+
+-   Los datos obtenidos después de la secuenciación no son equivalentes a los [datos ecológicos]{.cross}.
+
+-   En un estudio ecológico es posible que coexistan muchas especies diferentes y su abundacia absoluta puede ser importante.
+
+En los datos de secuenciación de alto rendimiento ([HTS]{.highlight}):
+
+-   El número de lecturas no representa la abundancia total o absoluta en el ecosistema. El secuenciador solo puede proporcionar [lecturas hasta su capacidad]{.highlight}.
+
+<center>![](images/poblacion.PNG)</center>
+
+<br>
+
+
+- La frecuencia de lecturas observadas en un experimento de HTS es una muestra aleatoria de tamaño fijo de la abundancia relativa de las moléculas en el ecosistema subyacente.
+
+
+- Esto se reconoce implícitamente cuando los conjuntos de datos del microbioma se convierten en valores de abundancia relativa o conteos normalizados,o se "enrarecen" (rarefying).
+
+- Además, el recuento no puede relacionarse con el número absoluto de moléculas en la muestra de entrada.
+
+
+-   El [número de recuentos en un conjunto de datos]{.highlight} de secuenciación de alto rendimiento (HTS) refleja la proporción de recuentos por OTU, gen, etc. por muestra, multiplicada por la profundidad de secuenciación.
+
+
+-   Por lo tanto, solo se dispone de las [abundancias relativas]{.circle}. El número de lecturas obtenidas es irrelevante, y solo contiene información sobre la precisión de la estimación.
+
+::: box
+<p class="text-danger">
+
+Los datos que se describen de forma natural como proporciones o probabilidades, o con una suma constante o irrelevante, se denominan datos composicionales. **Los datos de composición contienen información sobre las relaciones entre las partes.**
+
+</p>
+:::
+
+Podemos ver la diferencia entre conteos y composiciones comparando los datos de tres muestras en el gráfico que se presenta a continuación.
+
+-   Los diagramas de barras que se presentan a continuación muestran la diferencia entre el conteo de moléculas y la proporción de moléculas para dos características, A y B en tres muestras.
+
+<center>![](images/abundancias_relativas.PNG)</center>
+
+Observa que las muestras 2 y 3 tienen las mismas abundancias proporcionales aunque tengan conteos absolutos diferentes antes de la secuenciación.
+
+En la tabla podemos observar que la relación entre la abundancia absoluta y la abundancia relativa cambia de manera significativa.
+
+## 
+
+## Problemas con las técnicas de análisis de datos estándar
+
+## Análisis de datos HT usando CODA
+
+## Un ejemplo
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+<!-- Hasta aquí -->
+
+You can also [strike through]{.strike}, [cross-off]{.cross}, [highlight]{.highlight}, and [circle]{.circle} text
+
+Tables also work
+
+| Default | Left | Right | Center |
+|---------|:-----|------:|:------:|
+| 12      | 12   |    12 |   12   |
+| 123     | 123  |   123 |  123   |
+| 1       | 1    |     1 |   1    |
