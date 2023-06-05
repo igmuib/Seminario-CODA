@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.475">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Grupo BIOCOM">
+<meta name="dcterms.date" content="2023-06-08">
+
+<title>CODA para estudios del microbioma</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="template_files/libs/clipboard/clipboard.min.js"></script>
+<script src="template_files/libs/quarto-html/quarto.js"></script>
+<script src="template_files/libs/quarto-html/popper.min.js"></script>
+<script src="template_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="template_files/libs/quarto-html/anchor.min.js"></script>
+<link href="template_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="template_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="template_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="template_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="template_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="template_files/libs/quarto-contrib/sketchy-annotate-0.0.1/annotate.js"></script>
+
+
+<link rel="stylesheet" href="_extensions/sketchy/theme.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introducción" id="toc-introducción" class="nav-link active" data-scroll-target="#introducción">Introducción 👋</a>
+  <ul class="collapse">
+  <li><a href="#objetivos-del-seminario" id="toc-objetivos-del-seminario" class="nav-link" data-scroll-target="#objetivos-del-seminario">Objetivos del seminario 🎯</a></li>
+  </ul></li>
+  <li><a href="#los-datos-de-secuenciación-son-composicionales" id="toc-los-datos-de-secuenciación-son-composicionales" class="nav-link" data-scroll-target="#los-datos-de-secuenciación-son-composicionales">1. Los datos de secuenciación son composicionales 🤯</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  <li><a href="#problemas-con-las-técnicas-de-análisis-de-datos-estándar" id="toc-problemas-con-las-técnicas-de-análisis-de-datos-estándar" class="nav-link" data-scroll-target="#problemas-con-las-técnicas-de-análisis-de-datos-estándar">Problemas con las técnicas de análisis de datos estándar</a></li>
+  <li><a href="#análisis-de-datos-ht-usando-coda" id="toc-análisis-de-datos-ht-usando-coda" class="nav-link" data-scroll-target="#análisis-de-datos-ht-usando-coda">Análisis de datos HT usando CODA</a></li>
+  <li><a href="#un-ejemplo" id="toc-un-ejemplo" class="nav-link" data-scroll-target="#un-ejemplo">Un ejemplo</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">CODA para estudios del microbioma</h1>
+<p class="subtitle lead">Seminario para METACIRCLE</p>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    Grupo BIOCOM 
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Dpto. Matemáticas e Informática - UIB
+          </p>
+      </div>
+    </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 8, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introducción" class="level2">
+<h2 class="anchored" data-anchor-id="introducción">Introducción 👋</h2>
+<ul>
+<li><p>Los estudios sobre el microbioma humano se enmarcan en el ámbito de los datos de composición, porque <font color="blue"> las abundancias absolutas de microbios no pueden obtenerse a partir de los datos de secuenciación</font>.</p></li>
+<li><p>Cada muestra consiste en proporciones de varios organismos con una suma limitada a una constante. Esta simple característica puede hacer que <font color="blue"> los tratamientos estadísticos tradicionales, pueden producir resultados erróneos y correlaciones espurias</font>.</p></li>
+</ul>
+<section id="objetivos-del-seminario" class="level3">
+<h3 class="anchored" data-anchor-id="objetivos-del-seminario">Objetivos del seminario 🎯</h3>
+<p><em>i.- Discutiremos los orígenes de la composicionalidad en los datos del microbioma y algunas características de este tipo de datos que influencian el análisis estadístico.</em></p>
+<p><em>ii.- Mostraremos los principales problemas de utilizar los métodos estadísticos tradicionales para tratar los datos de secuenciación.</em></p>
+<p><em>iii.- Con un ejemplo de datos de la microbiota humana, veremos un análisis de datos composicional en la práctica.</em></p>
+</section>
+</section>
+<section id="los-datos-de-secuenciación-son-composicionales" class="level2">
+<h2 class="anchored" data-anchor-id="los-datos-de-secuenciación-son-composicionales">1. Los datos de secuenciación son composicionales 🤯</h2>
+<p><img src="images/frontiers.PNG" class="img-fluid"></p>
+<ul>
+<li><p>Los datos obtenidos después de la secuenciación no son equivalentes a los <span class="cross">datos ecológicos</span>.</p></li>
+<li><p>En un estudio ecológico es posible que coexistan muchas especies diferentes y su abundacia absoluta puede ser importante.</p></li>
+</ul>
+<p>En los datos de secuenciación de alto rendimiento (<span class="highlight">HTS</span>):</p>
+<ul>
+<li>El número de lecturas no representa la abundancia total o absoluta en el ecosistema. El secuenciador solo puede proporcionar <span class="highlight">lecturas hasta su capacidad</span>.</li>
+</ul>
+<center>
+<img src="images/poblacion.PNG" class="img-fluid">
+</center>
+<p><br></p>
+<ul>
+<li><p>La frecuencia de lecturas observadas en un experimento de HTS es una muestra aleatoria de tamaño fijo de la abundancia relativa de las moléculas en el ecosistema subyacente.</p></li>
+<li><p>Esto se reconoce implícitamente cuando los conjuntos de datos del microbioma se convierten en valores de abundancia relativa o conteos normalizados,o se “enrarecen” (rarefying).</p></li>
+<li><p>Por lo tanto, solo se dispone de las <span class="circle">abundancias relativas</span>. El número de lecturas obtenidas es irrelevante, y solo contiene información sobre la precisión de la estimación.</p></li>
+</ul>
+<p><br></p>
+<div class="box">
+<p class="text-danger">
+</p><p><font color="blue">Los datos que se describen de forma natural como proporciones o probabilidades, o con una suma constante o irrelevante, se denominan datos composicionales.</font></p><font color="blue">
+<strong>Los datos de composición contienen información sobre las relaciones entre las partes.</strong> </font>
+<p></p>
+</div>
+<p><br> Podemos ver la diferencia entre conteos y composiciones comparando los datos de tres muestras en el gráfico que se presenta a continuación.</p>
+<ul>
+<li>Los diagramas de barras que se presentan a continuación muestran la diferencia entre el conteo de moléculas y la proporción de moléculas para dos características, A y B en tres muestras.</li>
+</ul>
+<center>
+<img src="images/abundancias_relativas.PNG" class="img-fluid">
+</center>
+<p>Observa que las muestras 2 y 3 tienen las mismas abundancias proporcionales aunque tengan conteos absolutos diferentes antes de la secuenciación.</p>
+<p>En la tabla podemos observar que la relación entre la abundancia absoluta y la abundancia relativa cambia de manera significativa.</p>
+</section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+</section>
+<section id="problemas-con-las-técnicas-de-análisis-de-datos-estándar" class="level2">
+<h2 class="anchored" data-anchor-id="problemas-con-las-técnicas-de-análisis-de-datos-estándar">Problemas con las técnicas de análisis de datos estándar</h2>
+</section>
+<section id="análisis-de-datos-ht-usando-coda" class="level2">
+<h2 class="anchored" data-anchor-id="análisis-de-datos-ht-usando-coda">Análisis de datos HT usando CODA</h2>
+</section>
+<section id="un-ejemplo" class="level2">
+<h2 class="anchored" data-anchor-id="un-ejemplo">Un ejemplo</h2>
+<p>When you click the <strong>Render</strong> button a document will be generated that includes both content and the output of embedded code. You can embed code like this:</p>
+<!-- Hasta aquí -->
+<p>You can also <span class="strike">strike through</span>, <span class="cross">cross-off</span>, <span class="highlight">highlight</span>, and <span class="circle">circle</span> text</p>
+<p>Tables also work</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Default</th>
+<th style="text-align: left;">Left</th>
+<th style="text-align: right;">Right</th>
+<th style="text-align: center;">Center</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>12</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: center;">12</td>
+</tr>
+<tr class="even">
+<td>123</td>
+<td style="text-align: left;">123</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: center;">123</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
